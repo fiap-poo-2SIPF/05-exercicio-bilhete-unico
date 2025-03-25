@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 import static javax.swing.JOptionPane.*;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
@@ -42,6 +44,9 @@ public class Util {
                     case 1:
                         emitirBilhete();
                         break;
+                    case 2:
+                        listarBilhetes();
+                        break;
                 }
             }
         } while(opcao != 4);
@@ -51,5 +56,29 @@ public class Util {
     private void emitirBilhete() {
         String nome, perfil;
         long cpf;
+        if(index < bilhete.length) {
+            nome = showInputDialog("Nome do usuário: ");
+            cpf = parseLong(showInputDialog("CPF:"));
+            perfil = showInputDialog("Perfil --> professor ou estudante ou comum");
+            bilhete[index] = new Bilhete(new Usuario(nome, cpf, perfil));
+            index++;
+        }
+        else {
+            showMessageDialog(null, "Entre em contato com a administração");
+        }
+    }
+
+    // método para listar os dados de cada um dos objetos armazenados
+    private void listarBilhetes() {
+        DecimalFormat df = new DecimalFormat("0.00");
+        String aux = "";
+        for(int i = 0; i < index; i++) {
+            aux += "Número do bilhete: " + bilhete[i].numero + "\n";
+            aux += "Nome do usuário: " + bilhete[i].usuario.nome + "\n";
+            aux += "Perfil (tipo de tarifa): " + bilhete[i].usuario.perfil + "\n";
+            aux += "Saldo R$ " + df.format(bilhete[i].saldo) + "\n";
+            aux += "-----------------------------------------\n";
+        }
+        showMessageDialog(null, aux);
     }
 }
