@@ -8,7 +8,7 @@ import static java.lang.Double.parseDouble;
 public class Util {
 
     // vetor para armazenar os objetos do tipo bilhete
-    private Bilhete[] bilhete = new Bilhete[2];
+    private Bilhete[] bilhete = new Bilhete[3];
     private int index = 0;
 
     // método para exibir o menu principal da aplicação
@@ -24,6 +24,9 @@ public class Util {
                 switch(opcao) {
                     case 1:
                         menuAdministrador();
+                        break;
+                    case 2:
+                        menuUsuario();
                         break;
                 }
             }
@@ -80,5 +83,71 @@ public class Util {
             aux += "-----------------------------------------\n";
         }
         showMessageDialog(null, aux);
+    }
+
+    // método para exibir o menu do usuário do bilhete
+    private void menuUsuario() {
+        int opcao;
+        String menu = "1. Carregar bilhete\n2. Consultar saldo\n" +
+                      "3. Passar na catraca\n4. Sair";
+        do {
+            opcao = parseInt(showInputDialog(menu));
+            if(opcao < 1 || opcao > 4) {
+                showMessageDialog(null, "Opção inválida");
+            }
+            else {
+                switch (opcao) {
+                    case 1:
+                        carregarBilhete();
+                        break;
+                    case 2:
+                        consultarSaldo();
+                        break;
+                    case 3:
+                        passarNaCatraca();
+                        break;
+                }
+            }
+        } while(opcao != 4);
+    }
+
+    // método para carregar o bilhete com um valor informado pelo usuário
+    private void carregarBilhete() {
+        int posicao = pesquisar();
+        double valor;
+        if(posicao != -1) {
+            valor = parseDouble(showInputDialog("Valor da recarga"));
+            bilhete[posicao].carregar(valor);
+        }
+    }
+
+    // método para consultar o saldo de um bilhete --> usuário informa o cpf
+    private void consultarSaldo() {
+        int posicao = pesquisar();
+        if(posicao != -1) {
+            showMessageDialog(null, "Saldo R$ " + bilhete[posicao].consultarSaldo());
+        }
+    }
+
+    // método para simular a passagem na catraca do metrô
+    private void passarNaCatraca() {
+        int posicao = pesquisar();
+        if(posicao != -1) {
+            bilhete[posicao].passarNaCatraca();
+        }
+    }
+
+    // método para pesquisar um bilhete pelo cpf do usuário
+    private int pesquisar() {
+        int posicao = -1;
+        long cpf = parseLong(showInputDialog("CPF"));
+        for(int i = 0; i < index; i++) {
+            if(bilhete[i].usuario.cpf == cpf) {
+                posicao = i;
+                return posicao;
+            }
+        }
+        showMessageDialog(null, cpf + "não encontrado");
+        return posicao;
     }
 }
