@@ -50,6 +50,9 @@ public class Util {
                     case 2:
                         listarBilhetes();
                         break;
+                    case 3:
+                        removerBilhete();
+                        break;
                 }
             }
         } while(opcao != 4);
@@ -149,5 +152,19 @@ public class Util {
         }
         showMessageDialog(null, cpf + "não encontrado");
         return posicao;
+    }
+
+    // método para remover um bilhete a partir de um cpf
+    private void removerBilhete() {
+        int resposta;
+        int posicao = pesquisar();
+
+        if(posicao != -1) {
+            resposta = showConfirmDialog(null, "Tem certeza que deseja remover o bilhete?");
+            if(resposta == YES_OPTION) {
+                bilhete[posicao] = bilhete[index - 1];
+                index--;
+            }
+        }
     }
 }
